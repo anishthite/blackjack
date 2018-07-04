@@ -16,16 +16,17 @@ def bet():
 	betAmount = input("How much would you like to bet?")
 	
 def play():
-	global player
+	global player, dealer
 	playType = ""
 	while ((playType != "hit") and (playType != "stand")):  
 		playType  = input("Would you like to hit, or stand").lower()
 	if (playType == "hit"):
 		deck.draw(1, player.hand)
-		for card in player.hand:
-			card.faceup()
+		dealer.show()
+		player.show()
+		return True
 	if (playType == "stand"): 
-		return
+		return False
 def main():
 	global deck, player, dealer, betAmount
 	#setup
@@ -38,20 +39,16 @@ def main():
 		print('Player Balance: ' + str(player.cash))
 		betAmount = 0
 	#dealer puts their cards
-		deck.draw(1, dealer.hand)
-		dealer.hand[0].faceup()	
-		deck.draw(1, dealer.hand)
-		dealer.hand[1].facedown()
-		print ("")
+		deck.draw(2, dealer.hand)
+		dealer.show()
 		deck.draw(2,player.hand)
-		for card in player.hand:
-			card.faceup()
-		print ("")
-
+		player.show()
 	#you bet
 		bet()
 	#you decide to get one more card
-		play()
-	#loop
+		continuePlay = True
+		while (continuePlay == True):
+			continuePlay = play()
 	#dealer takes the cards as they add up to at least 17
+		cover()
 main()

@@ -8,10 +8,17 @@ class Player:
 		self.cash = cash
 		self.hand = []
 	def show(self):
-		for card in player.hand:
+		for card in self.hand:
 			card.faceup()
+		print("")
 class Dealer:
 	def __init__(self):
 		self.hand = []
-	def show covere
-		
+	def show(self):
+		self.hand[0].faceup()	
+		self.hand[1].facedown()
+		print("")
+	def show_final(self):
+		for card in self.hand:
+			card.faceup()
+		print("")	
