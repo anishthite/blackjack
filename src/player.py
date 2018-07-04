@@ -8,6 +8,6 @@ class Player:
 		self.cash = cash
 		self.hand = []
 class Dealer:
-	def __init(self):
+	def __init__(self):
 		self.hand = []
 		

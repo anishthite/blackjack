@@ -27,6 +27,7 @@ def play():
 	if (playType == "stand"): 
 		return
 def main():
+	global deck, player, dealer, betAmount
 	#setup
 	setup()
 	#loop

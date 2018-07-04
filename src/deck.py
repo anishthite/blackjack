@@ -9,9 +9,9 @@ class Card:
 	def __init__(self, number):
 		self.number = number   
 	def faceup(self):
-		print ( "[" + self.number + "]")
+		print ( "[" + self.number + "]", end='')
 	def facedown(self):
-		print ("[X]")
+		print ("[X]", end='')
 class Deck:
 	def shuffle(self):
 		for x in range(52):
