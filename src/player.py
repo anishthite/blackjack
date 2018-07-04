@@ -11,7 +11,7 @@ class Player:
 		for card in self.hand:
 			card.faceup()
 		print("")
-class Dealer:
+class Dealer():
 	def __init__(self):
 		self.hand = []
 	def show(self):
@@ -21,4 +21,8 @@ class Dealer:
 	def show_final(self):
 		for card in self.hand:
 			card.faceup()
-		print("")	
+		print("")
+	def count(self):
+		total = 0
+		for card in self.hand:
+			total += card.value()	

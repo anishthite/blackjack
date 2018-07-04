@@ -14,7 +14,6 @@ def bet():
 	global betAmount
 	#print ("You have bet " + betAmount)
 	betAmount = input("How much would you like to bet?")
-	
 def play():
 	global player, dealer
 	playType = ""
@@ -27,6 +26,10 @@ def play():
 		return True
 	if (playType == "stand"): 
 		return False
+def cover():
+	while (dealer.count() < 17 and dealer.count() < 21):
+		
+		deck.draw(1, dealer.hand)
 def main():
 	global deck, player, dealer, betAmount
 	#setup
@@ -50,5 +53,5 @@ def main():
 		while (continuePlay == True):
 			continuePlay = play()
 	#dealer takes the cards as they add up to at least 17
-		cover()
+		cover
 main()
