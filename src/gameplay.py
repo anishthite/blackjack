@@ -18,7 +18,7 @@ def bet():
 def play():
 	global player
 	playType = ""
-	while ((playType != "hit") or (playType != "stand")):  
+	while ((playType != "hit") and (playType != "stand")):  
 		playType  = input("Would you like to hit, or stand").lower()
 	if (playType == "hit"):
 		deck.draw(1, player.hand)
@@ -37,14 +37,17 @@ def main():
 		#dealer puts your cards
 		print('Player Balance: ' + str(player.cash))
 		betAmount = 0
+	#dealer puts their cards
+		deck.draw(1, dealer.hand)
+		dealer.hand[0].faceup()	
+		deck.draw(1, dealer.hand)
+		dealer.hand[1].facedown()
+		print ("")
 		deck.draw(2,player.hand)
 		for card in player.hand:
 			card.faceup()
-	#dealer puts their cards
-		deck.draw(1, dealer.hand)
-		card.faceup()	
-		deck.draw(1, dealer.hand)
-		card.facedown()
+		print ("")
+
 	#you bet
 		bet()
 	#you decide to get one more card
