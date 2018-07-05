@@ -15,7 +15,7 @@ class Card:
 	def value(self):
 		if (self.number == "A"):
 			return 1
-		elif (self.number == "K" or "Q" or "J"):
+		elif (self.number == "K" or self.number =="Q" or self.number == "J"):
 			return 10
 		else:
 			return int(self.number)

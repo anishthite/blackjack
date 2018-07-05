@@ -78,6 +78,8 @@ def close():
 	player.hand.clear()
 	if len(deck.deck) <= 4:
 		print ("Deck is complete")
+		print ("PlayerWins: " + playerWins)
+		print ("DealerWins: " + dealerWins)
 		gameLive = False
 		return	
 	else: 
