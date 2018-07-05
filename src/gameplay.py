@@ -5,11 +5,15 @@ Created on Jul 1, 2018
 '''
 from deck import Deck as Deck
 import player as pl
+
 def setup():
-	global deck, player, dealer
+	global deck, player, dealer, dealerWins, playerWins, draws
 	deck = Deck()
 	player = pl.Player(1000)
 	dealer = pl.Dealer()
+	dealerWins = 0
+	playerWins = 0
+	draws = 0
 def bet():
 	global betAmount
 	#print ("You have bet " + betAmount)
@@ -26,10 +30,58 @@ def play():
 		return True
 	if (playType == "stand"): 
 		return False
+def player_wins():
+	global playerWins, player
+	player.cash += int(betAmount)
+	playerWins +=1
+def dealer_wins():
+	global dealerWins, player
+	player.cash -= int(betAmount)
+	dealerWins +=1
+def score():
+	global dealerWins, playerWins, draws, player, dealer
+	#player > 21
+	if (player.count() > 21):
+		print ('Player Busted')
+		dealer_wins()
+		return
+	#dealer > 21
+	elif (dealer.count() > 21):
+		print ("Dealer Busted")
+		player_wins()
+		return
+	#dealer > player
+	elif (dealer.count() > player.count()):
+		print ("Dealer more than Player")
+		dealer_wins()
+		return
+	#player > dealer
+	elif (player.count() > dealer.count()):
+		print ("Player more than Dealer")
+		player_wins()
+		return	
+	#deal = player
+	else:
+		print ("Draw")
+		draws +=1
+		return
 def cover():
-	while (dealer.count() < 17 and dealer.count() < 21):
-		
+	global dealer, player
+	while (dealer.count() < 17):
 		deck.draw(1, dealer.hand)
+	dealer.show_final()
+	player.show()
+#close if the cards <= 4
+def close(): 
+	global gameLive
+	dealer.hand.clear()
+	player.hand.clear()
+	if len(deck.deck) <= 4:
+		print ("Deck is complete")
+		gameLive = False
+		return	
+	else: 
+		return
 def main():
 	global deck, player, dealer, betAmount
 	#setup
@@ -53,5 +105,8 @@ def main():
 		while (continuePlay == True):
 			continuePlay = play()
 	#dealer takes the cards as they add up to at least 17
-		cover
+		cover()
+		score()
+		close()
+		
 main()
