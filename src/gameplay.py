@@ -18,6 +18,14 @@ def bet():
 	global betAmount
 	#print ("You have bet " + betAmount)
 	betAmount = input("How much would you like to bet?")
+def score_hit():
+	if (player.count() > 21):
+		print ('Player Busted')
+		dealer_wins()
+		close()
+		return	
+	else:
+		return
 def play():
 	global player, dealer
 	playType = ""
@@ -27,6 +35,7 @@ def play():
 		deck.draw(1, player.hand)
 		dealer.show()
 		player.show()
+		score_hit()
 		return True
 	if (playType == "stand"): 
 		return False
