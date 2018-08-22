@@ -93,6 +93,8 @@ def close():
 		return	
 	else: 
 		return
+#def enter():
+    
 def main():
 	global deck, player, dealer, betAmount
 	#setup
