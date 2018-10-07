@@ -2,6 +2,7 @@
 Created on Jul 1, 2018
 
 @author: anish
+TODO: csv file, bot function
 '''
 from deck import Deck as Deck
 import player as pl
@@ -26,18 +27,28 @@ def score_hit():
 		return	
 	else:
 		return
-def play():
+def bot_play(playType):
 	global player, dealer
-	playType = ""
-	while ((playType != "hit") and (playType != "stand")):  
-		playType  = input("Would you like to hit, or stand").lower()
-	if (playType == "hit"):
+	if (playType == "hit" or playType == "h"):
 		deck.draw(1, player.hand)
 		dealer.show()
 		player.show()
 		score_hit()
 		return True
-	if (playType == "stand"): 
+	if (playType == "stand" or playType == "s"): 
+		return False
+def player_play():
+	global player, dealer
+	playType = ""
+	while (playType != "hit" and playType != "h" and playType != "stand" and playType != "s"):  
+		playType  = input("Would you like to hit, or stand").lower()
+	if (playType == "hit" or playType == "h"):
+		deck.draw(1, player.hand)
+		dealer.show()
+		player.show()
+		score_hit()
+		return True
+	if (playType == "stand" or playType == "s"): 
 		return False
 def player_wins():
 	global playerWins, player
@@ -93,8 +104,8 @@ def close():
 		return	
 	else: 
 		return
-def main():
-	global deck, player, dealer, betAmount
+def main_method():
+	global player, deck, dealer, betAmount
 	#setup
 	setup()
 	#loop
@@ -113,11 +124,12 @@ def main():
 		bet()
 	#you decide to get one more card
 		continuePlay = True
-		while (continuePlay == True):
-			continuePlay = play()
+		playerplaying = True
+		while (continuePlay == True and playerplaying == True):
+			continuePlay = player_play()
 	#dealer takes the cards as they add up to at least 17
 		cover()
 		score()
 		close()
-		
-main()
+if __name__ == "__main__":
+    main_method()
