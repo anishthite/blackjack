@@ -1,135 +1,178 @@
 '''
 Created on Jul 1, 2018
 
-@author: anish
-TODO: csv file, bot function
+author: anish
+TODO: csv file, bot function, wrapper for people
 '''
 from deck import Deck as Deck
 import player as pl
+import enum
+'''
+game class: dealerwins, playerwins, draws, player, dealer, deck, gametype 
 
-def setup():
-	global deck, player, dealer, dealerWins, playerWins, draws
-	deck = Deck()
-	player = pl.Player(1000)
-	dealer = pl.Dealer()
-	dealerWins = 0
-	playerWins = 0
-	draws = 0
-def bet():
-	global betAmount
-	#print ("You have bet " + betAmount)
-	betAmount = input("How much would you like to bet?")
-def score_hit():
-	if (player.count() > 21):
-		print ('Player Busted')
-		dealer_wins()
-		close()
-		return	
-	else:
-		return
+play class: deck, player, dealer, betamount, decision
+
+'''
+
+class Result(enum.Enum):
+    playerBusted = 0
+    dealerBusted = 1
+    dealerMore = 0
+    playerMore = 1
+    draw = 2
+class PlayType(enum.Enum):
+    hit = 0
+    stand = 1
+class Play:
+
+    def __init__(self,player,dealer,deck, gameType,betAmount):
+    
+        self.player = player
+        self.dealer = dealer
+        self.deck = deck
+        self.gameType = gameType
+        self.betAmount = betAmount
+        #draw cards
+        self.deck.draw(2, self.dealer.hand)
+        self.dealer.show() #TODO: return the show, not print
+        self.deck.draw(2, self.player.hand)
+        self.player.show() #TODO: return the show, do not print
+    def player_wins():
+        global playerWins, player
+        self.player.cash += self.betAmount
+        playerWins +=1
+    def dealer_wins():
+        global dealerWins, player
+        player.cash -= int(betAmount)
+        dealerWins +=1
+    def score_hit():
+        if (self.player.count() > 21):
+            dealer_wins()
+            close()
+            return Result.playerBusted	
+        else:
+            return None
+    def score():
+        playerCount = self.player.count()
+        dealerCount = self.dealer.count()
+        #player > 21
+        if (playerCount > 21):
+            dealer_wins()
+            return Result.playerBusted
+        #dealer > 21
+        elif (dealerCount > 21):
+            player_wins()
+            return Result.dealerBusted
+        #dealer > player
+        elif (dealerCount > playerCount):
+            dealer_wins()
+            return Result.dealerMore
+        #player > dealer
+        elif (playerCount > dealerCount):
+            player_wins()
+            return Result.playerMore
+        #deal = player
+        else:
+            draws +=1
+            return result.draw
+    def cover(self):
+        while (self.dealer.count() < 17):
+            self.deck.draw(1, self.dealer.hand)
+        self.dealer.show_final()
+        self.player.show()
+    def play(self, playType):
+        if (playType == PlayType.hit):
+            self.deck.draw(1, self.player.hand)
+            self.dealer.show()
+            self.player.show()
+            score_hit()
+            return True
+        if (playType == PlayType.stand): 
+            return False
+    def close(): 
+        self.dealer.hand.clear()
+        self.player.hand.clear()
+        if len(self.deck.deck) <= 4:
+            print ("Deck is complete")
+            print ("PlayerWins: " + playerWins)
+            print ("DealerWins: " + dealerWins)
+        return
+
+class Game:
+    #return the 
+    def __init__(self, startingAmount, gameType):
+        self.deck = Deck()
+        self.player = p1.Player(startingAmount)
+        self.dealer - p1.Dealer()
+        self.gameType = gameType
+        self.dealer_wins = 0
+        self.playerWins = 0
+        self.draws = 0
+        return startingAmount
+    #TODO: def people wrapper
+    #roundresult: oldaccount, betmoney, newaccount,  
+    def round(self,betAmount):
+        play = Play(self.player, self.dealer,self.gameType,betAmount)
+        gameLive = True
+        roundresult.append()
+        while (continuePlay == True):
+            continuePlay = play.play()#TODO: playtype
+        play.cover()
+        play.score()
+        play.close()
+        return roundResult
+
 def bot_play(playType):
-	global player, dealer
-	if (playType == "hit" or playType == "h"):
-		deck.draw(1, player.hand)
-		dealer.show()
-		player.show()
-		score_hit()
-		return True
-	if (playType == "stand" or playType == "s"): 
-		return False
+        global player, dealer
+    if (playType == "hit" or playType == "h"):
+        deck.draw(1, player.hand)
+        dealer.show()
+        player.show()
+        score_hit()
+        return True
+    if (playType == "stand" or playType == "s"): 
+        return False
 def player_play():
-	global player, dealer
-	playType = ""
-	while (playType != "hit" and playType != "h" and playType != "stand" and playType != "s"):  
-		playType  = input("Would you like to hit, or stand").lower()
-	if (playType == "hit" or playType == "h"):
-		deck.draw(1, player.hand)
-		dealer.show()
-		player.show()
-		score_hit()
-		return True
-	if (playType == "stand" or playType == "s"): 
-		return False
-def player_wins():
-	global playerWins, player
-	player.cash += int(betAmount)
-	playerWins +=1
-def dealer_wins():
-	global dealerWins, player
-	player.cash -= int(betAmount)
-	dealerWins +=1
-def score():
-	global dealerWins, playerWins, draws, player, dealer
-	#player > 21
-	if (player.count() > 21):
-		print ('Player Busted')
-		dealer_wins()
-		return
-	#dealer > 21
-	elif (dealer.count() > 21):
-		print ("Dealer Busted")
-		player_wins()
-		return
-	#dealer > player
-	elif (dealer.count() > player.count()):
-		print ("Dealer more than Player")
-		dealer_wins()
-		return
-	#player > dealer
-	elif (player.count() > dealer.count()):
-		print ("Player more than Dealer")
-		player_wins()
-		return	
-	#deal = player
-	else:
-		print ("Draw")
-		draws +=1
-		return
-def cover():
-	global dealer, player
-	while (dealer.count() < 17):
-		deck.draw(1, dealer.hand)
-	dealer.show_final()
-	player.show()
-#close if the cards <= 4
-def close(): 
-	global gameLive
-	dealer.hand.clear()
-	player.hand.clear()
-	if len(deck.deck) <= 4:
-		print ("Deck is complete")
-		print ("PlayerWins: " + playerWins)
-		print ("DealerWins: " + dealerWins)
-		gameLive = False
-		return	
-	else: 
-		return
+    global player, dealer
+    playType = ""
+    while (playType != "hit" and playType != "h" and playType != "stand" and playType != "s"):  
+        playType  = input("Would you like to hit, or stand").lower()
+    if (playType == "hit" or playType == "h"):
+        deck.draw(1, player.hand)
+        dealer.show()
+        player.show()
+        score_hit()
+        return True
+    if (playType == "stand" or playType == "s"): 
+        return False
+
+
 def main_method():
-	global player, deck, dealer, betAmount
-	#setup
-	setup()
-	#loop
-	print('Shuffling cards (1 deck)')
-	gameLive = True
-	while (gameLive == True):
-		#dealer puts your cards
-		print('Player Balance: ' + str(player.cash))
-		betAmount = 0
-	#dealer puts their cards
-		deck.draw(2, dealer.hand)
-		dealer.show()
-		deck.draw(2,player.hand)
-		player.show()
-	#you bet
-		bet()
-	#you decide to get one more card
-		continuePlay = True
-		playerplaying = True
-		while (continuePlay == True and playerplaying == True):
-			continuePlay = player_play()
-	#dealer takes the cards as they add up to at least 17
-		cover()
-		score()
-		close()
+    global player, deck, dealer, betAmount
+    #setup
+    setup()
+    #loop
+    print('Shuffling cards (1 deck)')
+    gameLive = True
+    while (gameLive == True):
+        #dealer puts your cards
+        print('Player Balance: ' + str(player.cash))
+        betAmount = 0
+    #dealer puts their cards
+        deck.draw(2, dealer.hand)
+        dealer.show()
+        deck.draw(2,player.hand)
+        player.show()
+    #you bet
+        bet()
+    #you decide to get one more card
+        continuePlay = True
+        playerplaying = True
+        while (continuePlay == True and playerplaying == True):
+            continuePlay = player_play()
+    #dealer takes the cards as they add up to at least 17
+        cover()
+        score()
+        close()
 if __name__ == "__main__":
     main_method()
