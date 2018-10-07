@@ -9,9 +9,9 @@ class Card:
 	def __init__(self, number):
 		self.number = number   
 	def faceup(self):
-		print ( "[" + self.number, end=']')
+		return str(self.number)
 	def facedown(self):
-		print ("[#", end=']')
+		return "#"
 	def value(self):
 		if (self.number == "A"):
 			return 1

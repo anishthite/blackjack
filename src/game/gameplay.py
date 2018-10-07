@@ -8,25 +8,25 @@ from deck import Deck as Deck
 import player as pl
 import enum
 '''
-game class: dealerwins, playerwins, draws, player, dealer, deck, gametype 
+GAME: creates instances of round, holds the init and closing methods
 
-play class: deck, player, dealer, betamount, decision
-
+Round: 1 round of BJ, including multiple plays
 '''
 
 class Result(enum.Enum):
+    """ Possible results for a round    """
     playerBusted = 0
     dealerBusted = 1
     dealerMore = 0
     playerMore = 1
     draw = 2
 class PlayType(enum.Enum):
+    """ Possible types of plays    """
     hit = 0
     stand = 1
-class Play:
-
+class Round:
+    """ One round of a Blackjack game, """
     def __init__(self,player,dealer,deck, gameType,betAmount):
-    
         self.player = player
         self.dealer = dealer
         self.deck = deck
@@ -111,8 +111,8 @@ class Game:
         return startingAmount
     #TODO: def people wrapper
     #roundresult: oldaccount, betmoney, newaccount,  
-    def round(self,betAmount):
-        play = Play(self.player, self.dealer,self.gameType,betAmount)
+    def round(self,betAmount): #TODO: find better name
+        round = round(self.player, self.dealer,self.gameType,betAmount)
         gameLive = True
         roundresult.append()
         while (continuePlay == True):
