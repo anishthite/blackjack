@@ -8,24 +8,25 @@ class Player:
         self.cash = cash
         self.hand = []
     def show(self):
+        show = []
         for card in self.hand:
-            card.faceup()
-        print("")
+            show.append(card.faceup())
+        return show
     def count(self):
         total = 0
         for card in self.hand:
             total += card.value()
         return total
-    def getHand(self):
-        return self.hand
 class Dealer(Player):
     def __init__(self):
         self.hand = []
     def show(self):
-        self.hand[0].faceup()	
-        self.hand[1].facedown()
-        print("")
+        show = []
+        show.append(self.hand[0].faceup())	
+        show.append(self.hand[1].facedown())
+        return show
     def show_final(self):
+        show = []
         for card in self.hand:
-            card.faceup()
-        print("")	
+            show.append(card.faceup())
+        return show	

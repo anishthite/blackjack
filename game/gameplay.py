@@ -34,9 +34,9 @@ class Round:
         self.betAmount = betAmount
         #draw cards
         self.deck.draw(2, self.dealer.hand)
-        self.dealer.show() #TODO: return the show, not print
+        self.dealer.show() 
         self.deck.draw(2, self.player.hand)
-        self.player.show() #TODO: return the show, do not print
+        self.player.show()
     def player_wins():
         global playerWins, player
         self.player.cash += self.betAmount
@@ -89,7 +89,9 @@ class Round:
             return True
         if (playType == PlayType.stand): 
             return False
-    def close(): 
+    def close():
+        result = score()
+        #TODO: finish implementing score in close 
         self.dealer.hand.clear()
         self.player.hand.clear()
         if len(self.deck.deck) <= 4:
@@ -118,7 +120,6 @@ class Game:
         while (continuePlay == True):
             continuePlay = play.play()#TODO: playtype
         play.cover()
-        play.score()
         play.close()
         return roundResult
 
