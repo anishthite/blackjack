@@ -7,10 +7,15 @@ from random import randint
 from collections import deque
 class Card:
 	def __init__(self, number):
-		self.number = number   
+		self.number = number
+		self.orientation = "down"   
 	def faceup(self):
+    	self.orientation = "up"
 		return str(self.number)
+	def get_orientation(self):
+    	return self.orientation
 	def facedown(self):
+    	self.orientation = "down"
 		return "#"
 	def value(self):
 		if (self.number == "A"):

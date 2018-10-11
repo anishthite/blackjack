@@ -15,14 +15,15 @@ class Player:
     def count(self):
         total = 0
         for card in self.hand:
-            total += card.value()
+            if card.get_orientation() == "up":
+                total += card.value()
         return total
 class Dealer(Player):
     def __init__(self):
         self.hand = []
     def show(self):
         show = []
-        show.append(self.hand[0].faceup())	
+        show.append(self.hand[0].faceup())
         show.append(self.hand[1].facedown())
         return show
     def show_final(self):

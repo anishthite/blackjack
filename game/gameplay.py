@@ -12,7 +12,13 @@ GAME: creates instances of round, holds the init and closing methods
 
 Round: 1 round of BJ, including multiple plays
 '''
-
+'''
+what data to insert:
+Action:
+game id, round id, money before round, betAmount, how much money after round, dealer shown count, player shown count, action, (if last action) end result
+Round:
+money before round, how much to bet, how much money after round, dealer shown count, player shown count, number of hits, number of stands
+'''
 class Result(enum.Enum):
     """ Possible results for a round    """
     playerBusted = 0
@@ -34,7 +40,7 @@ class Round:
         self.betAmount = betAmount
         #draw cards
         self.deck.draw(2, self.dealer.hand)
-        self.dealer.show() 
+        self.dealer.show()
         self.deck.draw(2, self.player.hand)
         self.player.show()
     def player_wins():
@@ -49,7 +55,7 @@ class Round:
         if (self.player.count() > 21):
             dealer_wins()
             close()
-            return Result.playerBusted	
+            return Result.playerBusted
         else:
             return None
     def score():
@@ -76,7 +82,7 @@ class Round:
             draws +=1
             return result.draw
     def cover(self):
-        while (self.dealer.count() < 17):
+        while (self.dealer.count() < 16):
             self.deck.draw(1, self.dealer.hand)
         self.dealer.show_final()
         self.player.show()
@@ -87,11 +93,11 @@ class Round:
             self.player.show()
             score_hit()
             return True
-        if (playType == PlayType.stand): 
+        if (playType == PlayType.stand):
             return False
     def close():
         result = score()
-        #TODO: finish implementing score in close 
+        #TODO: finish implementing score in close
         self.dealer.hand.clear()
         self.player.hand.clear()
         if len(self.deck.deck) <= 4:
@@ -100,27 +106,29 @@ class Round:
             print ("DealerWins: " + dealerWins)
         return
 
-class Game:
-    #return the 
+class Game:#TODO: Game id
+    #return the
     def __init__(self, startingAmount, gameType):
         self.deck = Deck()
         self.player = p1.Player(startingAmount)
-        self.dealer - p1.Dealer()
+        self.dealer = p1.Dealer()
         self.gameType = gameType
         self.dealer_wins = 0
         self.playerWins = 0
         self.draws = 0
+        self.id =
         return startingAmount
     #TODO: def people wrapper
-    #roundresult: oldaccount, betmoney, newaccount,  
-    def round(self,betAmount): #TODO: find better name
-        round = round(self.player, self.dealer,self.gameType,betAmount)
+    #roundresult: oldaccount, betmoney, newaccount, dealer card count, player card count
+    def round(self,betAmount):
+        this_round = Round(self.player, self.dealer,self.gameType,betAmount)
         gameLive = True
-        roundresult.append()
+        roundresult.append(self.player.cash, betAmount)
         while (continuePlay == True):
-            continuePlay = play.play()#TODO: playtype
-        play.cover()
-        play.close()
+            continuePlay = this_round.play()#TODO: playtype
+        this_round.cover()
+        this_round.close()
+        roundresult.append(self.player.cash)
         return roundResult
 
 def bot_play(playType):
@@ -131,12 +139,12 @@ def bot_play(playType):
         player.show()
         score_hit()
         return True
-    if (playType == "stand" or playType == "s"): 
+    if (playType == "stand" or playType == "s"):
         return False
 def player_play():
     global player, dealer
     playType = ""
-    while (playType != "hit" and playType != "h" and playType != "stand" and playType != "s"):  
+    while (playType != "hit" and playType != "h" and playType != "stand" and playType != "s"):
         playType  = input("Would you like to hit, or stand").lower()
     if (playType == "hit" or playType == "h"):
         deck.draw(1, player.hand)
@@ -144,7 +152,7 @@ def player_play():
         player.show()
         score_hit()
         return True
-    if (playType == "stand" or playType == "s"): 
+    if (playType == "stand" or playType == "s"):
         return False
 
 
