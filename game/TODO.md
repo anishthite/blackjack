@@ -4,5 +4,18 @@
 * create bot wrapper function
 * finish implementing score in close()?
 * document all code
-* implement gameid
-* implment roundid
+* fix the dealerwins and playerwins functions
+
+
+#GAMEFLOW:
+
+1. create session
+2. execute rounds of games
+    a. init
+        - create the metadata to store in csv
+        - draw the opening cards for the dealer and the player
+    b. loop:
+        - give the dealer hand and player hand (list of cards) to the agent
+        - get response
+        - if hit: add one more to player, check for bust, hand, complete csventry with the play results
+        - if stand: cover dealer, score, complete csventry with the play results

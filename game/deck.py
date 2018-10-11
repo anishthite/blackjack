@@ -8,8 +8,10 @@ from collections import deque
 class Card:
 	def __init__(self, number):
 		self.number = number
-		self.orientation = "down"   
+		self.value = value()
+		self.orientation = "down"
 	def faceup(self):
+    	"""returns the number and the orentation of the """
     	self.orientation = "up"
 		return str(self.number)
 	def get_orientation(self):
@@ -31,7 +33,7 @@ class Deck:
 			posb = randint(0,51)
 			carriercard = self.deck[posa]
 			self.deck[posa] = self.deck[posb]
-			self.deck[posb] = carriercard	 
+			self.deck[posb] = carriercard
 	def __init__(self):
 		self.deck = deque([])
 		DeckNumbers = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10","J", "Q", "K"]
