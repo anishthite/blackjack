@@ -75,7 +75,9 @@ class Game:
             self.deck.draw(1, self.dealer.hand)
         self.dealer.show_final()
         self.player.show()
-    def play(self, playType): #TODO: add dealer shown, playe shown, action
+    def display(self):
+        return self.dealer.hand, self.player.hand
+    def action(self, playType): #TODO: add dealer shown, playe shown, action
         if (playType == PlayType.hit):
             self.deck.draw(1, self.player.hand)
             self.reponse.append(self.dealer.show())
@@ -84,7 +86,7 @@ class Game:
             return True
         if (playType == PlayType.stand):
             return False
-    def close():
+    def close(self,):
         result = score()
         #TODO: finish implementing score in close
         self.dealer.hand.clear()

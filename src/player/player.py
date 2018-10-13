@@ -19,11 +19,11 @@ class Player:
 class Dealer:
 	def __init__(self):
 		self.hand = []
-	def show(self):
-		self.hand[0].faceup()	
+	def show(self):#TODO: need to return something
+		self.hand[0].faceup()
 		self.hand[1].facedown()
 		print("")
-	def show_final(self):
+	def show_final(self): #TODO: need to return something
 		for card in self.hand:
 			card.faceup()
 		print("")
@@ -31,4 +31,4 @@ class Dealer:
 		total = 0
 		for card in self.hand:
 			total += card.value()
-		return total	
+		return total

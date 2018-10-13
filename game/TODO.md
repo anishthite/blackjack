@@ -15,7 +15,9 @@
         - create the metadata to store in csv
         - draw the opening cards for the dealer and the player
     b. loop:
-        - give the dealer hand and player hand (list of cards) to the agent
-        - get response
-        - if hit: add one more to player, check for bust, hand, complete csventry with the play results
-        - if stand: cover dealer, score, complete csventry with the play results
+        init- generate csventry from metadata
+        display- give the dealer hand and player hand (list of cards) to the agent
+        action- get response
+        - if hit: add one more to player hand, check for bust (go to close),  complete csventry with the play results
+        - if stand: cover dealer, return outcome
+        - close: complete csventry with the play results
