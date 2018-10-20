@@ -1,6 +1,7 @@
 from deck import Deck as Deck
 import player as pl
 import enum, uuid
+
 class Result(enum.Enum):
     """ Possible results for a round    """
     playerBusted = 0
@@ -8,13 +9,16 @@ class Result(enum.Enum):
     dealerMore = 0
     playerMore = 1
     draw = 2
+
 class PlayType(enum.Enum):
     """ Possible types of plays    """
     hit = 0
     stand = 1
+
 class Game:
     """ One round of a Blackjack game, """
-    def __init__(self, gameid, player, dealer,deck, gameType,betAmount):
+
+    def __init__(self, session_id, player, dealer,deck, gameType,betAmount):
 
         """ Creates the round, and draws 2 cards from the deck
             for the dealer, and 2 cards for the player. Also creates
@@ -26,73 +30,76 @@ class Game:
         self.gameType = gameType
         self.betAmount = betAmount
         self.id = uuid.uuid4()
-        self.response.append(gameid, self.id, self.player.cash, betAmount)
+        self.session_id = session_id
+
         #draw cards
         self.deck.draw(2, self.dealer.hand)
-        self.response.append(self.dealer.show())
         self.deck.draw(2, self.player.hand)
-        self.response.append(self.player.show())
-    def player_wins(self):
-        global playerWins, player
-        self.player.cash += self.betAmount
-        playerWins +=1
-    def dealer_wins(self):
-        global dealerWins, player
-        self.player.cash -= int(self.betAmount)
-        dealerWins +=1
-    def score_hit():
+
+    def response_init(self):
+        self.response.clear()
+        self.response.append(self.session_id, self.id, self.player.cash, self.betAmount)
+
+    def display(self, final):
+        if final:
+            self.response.append(self.dealer.show_final(), self.dealer.count(), self.player.show(), self.player.count())
+            return self.dealer.show_final(), self.player.show()
+        else:
+            self.response.append(self.dealer.show(), self.dealer.count(), self.player.show(), self.player.count())
+            return self.dealer.show(), self.player.show()
+
+    def action(self, playType):
+        self.response.append(playType)
+        if (playType == PlayType.hit):
+            self.response.append(PlayType.name)
+            self.deck.draw(1, self.player.hand)
+            self.score_hit()
+            return True
+        if (playType == PlayType.stand):
+            self.response.append(PlayType.name)
+            self.cover()
+            return False
+
+    def score_hit(self):
         if (self.player.count() > 21):
-            dealer_wins()
-            close()
-            return Result.playerBusted
+            self.dealer_wins()
+            self.close(Result.playerBusted)
         else:
             return None
-    def score():
+
+    def score(self):
         playerCount = self.player.count()
         dealerCount = self.dealer.count()
-        #player > 21
         if (playerCount > 21):
-            dealer_wins()
-            return Result.playerBusted
-        #dealer > 21
+            self.dealer_wins()
+            self.close(Result.playerBusted)
         elif (dealerCount > 21):
-            player_wins()
-            return Result.dealerBusted
-        #dealer > player
+            self.player_wins()
+            self.close(Result.dealerBusted)
         elif (dealerCount > playerCount):
-            dealer_wins()
-            return Result.dealerMore
-        #player > dealer
+            self.dealer_wins()
+            self.close(Result.dealerMore)
         elif (playerCount > dealerCount):
-            player_wins()
-            return Result.playerMore
-        #deal = player
+            self.player_wins()
+            self.close(Result.playerMore)
         else:
-            draws +=1
-            return result.draw
+            self.close(Result.draw)
+
     def cover(self):
         while (self.dealer.count() < 16):
             self.deck.draw(1, self.dealer.hand)
-        self.dealer.show_final()
-        self.player.show()
-    def display(self):
-        return self.dealer.hand, self.player.hand
-    def action(self, playType): #TODO: add dealer shown, playe shown, action
-        if (playType == PlayType.hit):
-            self.deck.draw(1, self.player.hand)
-            self.reponse.append(self.dealer.show())
-            self.response.append(self.player.show())
-            score_hit()
-            return True
-        if (playType == PlayType.stand):
-            return False
-    def close(self,):
-        result = score()
-        #TODO: finish implementing score in close
+        self.display(True)
+        self.score()
+
+    def close(self, result):
+        self.response.append(self.player.cash,result)
         self.dealer.hand.clear()
         self.player.hand.clear()
-        if len(self.deck.deck) <= 4:
-            print ("Deck is complete")
-            print ("PlayerWins: " + playerWins)
-            print ("DealerWins: " + dealerWins)
-        return
+
+    def player_wins(self):
+        global playerWins, player
+        self.player.cash += self.betAmount
+
+    def dealer_wins(self):
+        global dealerWins, player
+        self.player.cash -= int(self.betAmount)
