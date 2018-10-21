@@ -13,7 +13,8 @@ class PlayType(enum.Enum):
     hit = 0
     stand = 1
 
-    def
+    def get_name(self):
+        return self.name
 
 class Game:
     """ One round of a Blackjack game, """
@@ -49,11 +50,11 @@ class Game:
     def action(self, playType):
         self.response.append(playType)
         if (playType == PlayType.hit):
-            self.response.append(PlayType.name)
+            self.response.append(playType.get_name())
             self.deck.draw(1, self.player.hand)
             self.score_hit()
             return True
-        self.response.append(PlayType.name)
+        self.response.append(playType.get_name())
         self.cover()
         return False
 
