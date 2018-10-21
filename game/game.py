@@ -8,6 +8,9 @@ class Result(enum.Enum):
     playerMore = "You have more than the Dealer"
     draw = "Congratulations, you drew. Should've bough a lottery ticket with that luck"
 
+    def get_name(self):
+        return self.name
+
 class PlayType(enum.Enum):
     """ Possible types of plays    """
     hit = 0
@@ -38,23 +41,25 @@ class Game:
 
     def response_init(self):
         self.response.clear()
-        self.response.extend((self.session_id, self.id, self.player.cash, self.betAmount))
+        self.response.extend((str(self.session_id), str(self.id), self.player.cash, self.betAmount))
 
     def display_final(self):
-        self.response.extend((self.dealer.show_final(), self.dealer.count(), self.player.show(), self.player.count()))
+        self.response.extend(('-'.join(str(item) for item in self.dealer.show_final()), self.dealer.count()))
+        self.response.extend(('-'.join(str(item) for item in self.player.show()), self.player.count()))
+        self.response.extend(())
         return self.dealer.show_final(), self.player.show()
     def display(self):
-        self.response.extend((self.dealer.show(), self.dealer.count(), self.player.show(), self.player.count()))
+
+        self.response.extend(('-'.join(str(item) for item in self.dealer.show()), self.dealer.count()))
+        self.response.extend(('-'.join(str(item) for item in self.player.show()), self.player.count()))
         return self.dealer.show(), self.player.show()
 
     def action(self, playType):
-        self.response.append(playType)
+        self.response.append(playType.get_name())
         if (playType == PlayType.hit):
-            self.response.append(playType.get_name())
             self.deck.draw(1, self.player.hand)
             self.score_hit()
             return True
-        self.response.append(playType.get_name())
         self.cover()
         return False
 
@@ -95,7 +100,7 @@ class Game:
             print(result.value)
             print("You have " + str(self.player.cash) + " credits remaining.")
             print("This is equal to "+ str(self.player.cash/9999999999) + " dollars. You are now immensely rich.")
-        self.response.extend((self.player.cash, result))
+        self.response.extend((self.player.cash, result.get_name()))
         self.dealer.hand.clear()
         self.player.hand.clear()
 
