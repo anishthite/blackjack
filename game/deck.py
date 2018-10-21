@@ -16,10 +16,9 @@ class Card:
     def derive_value(self):
         if (self.number == "A"):
             return 1
-        elif (self.number == "K" or self.number =="Q" or self.number == "J"):
+        if (self.number == "K" or self.number =="Q" or self.number == "J"):
             return 10
-        else:
-            return int(self.number)
+        return int(self.number)
 
     def faceup(self):
         """returns the number and the orentation of the """
@@ -62,7 +61,6 @@ class Deck:
                 self.deck.popleft()
             except IndexError:
                 newDeck = Deck()
-                self = newDeck
-                self.draw(number, location)
+                newDeck.draw(number, location)
             else:
                 location.append(self.deck.popleft())

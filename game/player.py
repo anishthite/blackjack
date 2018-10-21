@@ -18,8 +18,7 @@ class Player:
     def count(self):
         total = 0
         for card in self.hand:
-            if card.get_orientation() == "up":
-                total += card.derive_value()
+            total += card.derive_value()
         return total
 
 class Dealer(Player):

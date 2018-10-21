@@ -93,14 +93,14 @@ class Game:
     def close(self, result):
         if self.gameType == "human":
             print(result.value)
-            print("You have " + self.player.cash + " credits remaining.")
-            print("This is equal to "+ self.player.cash/9999999999 + " dollars. You are rich.")
-        self.response.append(self.player.cash, result)
+            print("You have " + str(self.player.cash) + " credits remaining.")
+            print("This is equal to "+ str(self.player.cash/9999999999) + " dollars. You are now immensely rich.")
+        self.response.extend((self.player.cash, result))
         self.dealer.hand.clear()
         self.player.hand.clear()
 
     def player_wins(self):
-        self.player.cash += self.betAmount
+        self.player.cash += int(self.betAmount)
 
     def dealer_wins(self):
         self.player.cash -= int(self.betAmount)
