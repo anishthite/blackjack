@@ -2,6 +2,7 @@
 * create human wrapper function
 * create bot wrapper function
 * test what happens when it reaches end of deck
+* make it so player can stop
 
 #CSV Guide
 what data to insert:

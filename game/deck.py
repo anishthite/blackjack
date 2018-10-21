@@ -8,7 +8,7 @@ from collections import deque
 
 class Card:
 
-    def __init__(self, number): 
+    def __init__(self, number):
         self.number = number
         self.value = self.derive_value()
         self.orientation = "down"

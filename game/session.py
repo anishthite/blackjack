@@ -26,18 +26,13 @@ how much money after round, (if last action) end result
 '''
 
 class Session:
-    #return the
 
     def __init__(self, startingAmount, gameType):
         self.deck = Deck()
         self.player = p1.Player(startingAmount)
         self.dealer = p1.Dealer()
         self.gameType = gameType
-        self.dealer_wins = 0
-        self.playerWins = 0
-        self.draws = 0
         self.id = uuid.uuid4()
-        return startingAmount
     #TODO: def people wrapper
     #roundresult: oldaccount, betmoney, newaccount, dealer card count, player card count
 
@@ -73,7 +68,6 @@ class Session:
             return True
         if (playType == "stand" or playType == "s"):
             return False
-
 
     def main_method():
         global player, deck, dealer, betAmount

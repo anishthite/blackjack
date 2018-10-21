@@ -1,25 +1,24 @@
-from deck import Deck as Deck
-import player as pl
 import enum, uuid
 
 class Result(enum.Enum):
     """ Possible results for a round    """
-    playerBusted = 0
-    dealerBusted = 1
-    dealerMore = 0
-    playerMore = 1
-    draw = 2
+    playerBusted = "You got Busted"
+    dealerBusted = "The Dealer got Busted"
+    dealerMore = "The Dealer has more than you"
+    playerMore = "You have more than the Dealer"
+    draw = "Congratulations, you drew. Should've bough a lottery ticket with that luck"
 
 class PlayType(enum.Enum):
     """ Possible types of plays    """
     hit = 0
     stand = 1
 
+    def
+
 class Game:
     """ One round of a Blackjack game, """
 
     def __init__(self, session_id, player, dealer,deck, gameType,betAmount):
-
         """ Creates the round, and draws 2 cards from the deck
             for the dealer, and 2 cards for the player. Also creates
             response to input in  csv"""
@@ -38,15 +37,14 @@ class Game:
 
     def response_init(self):
         self.response.clear()
-        self.response.append(self.session_id, self.id, self.player.cash, self.betAmount)
+        self.response.extend((self.session_id, self.id, self.player.cash, self.betAmount))
 
-    def display(self, final):
-        if final:
-            self.response.append(self.dealer.show_final(), self.dealer.count(), self.player.show(), self.player.count())
-            return self.dealer.show_final(), self.player.show()
-        else:
-            self.response.append(self.dealer.show(), self.dealer.count(), self.player.show(), self.player.count())
-            return self.dealer.show(), self.player.show()
+    def display_final(self):
+        self.response.extend((self.dealer.show_final(), self.dealer.count(), self.player.show(), self.player.count()))
+        return self.dealer.show_final(), self.player.show()
+    def display(self):
+        self.response.extend((self.dealer.show(), self.dealer.count(), self.player.show(), self.player.count()))
+        return self.dealer.show(), self.player.show()
 
     def action(self, playType):
         self.response.append(playType)
@@ -55,17 +53,14 @@ class Game:
             self.deck.draw(1, self.player.hand)
             self.score_hit()
             return True
-        if (playType == PlayType.stand):
-            self.response.append(PlayType.name)
-            self.cover()
-            return False
+        self.response.append(PlayType.name)
+        self.cover()
+        return False
 
     def score_hit(self):
         if (self.player.count() > 21):
             self.dealer_wins()
             self.close(Result.playerBusted)
-        else:
-            return None
 
     def score(self):
         playerCount = self.player.count()
@@ -88,18 +83,26 @@ class Game:
     def cover(self):
         while (self.dealer.count() < 16):
             self.deck.draw(1, self.dealer.hand)
-        self.display(True)
+        if (self.gameType == "human"):
+            print(self.display_final())
+        else:
+            self.display_final()
         self.score()
 
     def close(self, result):
-        self.response.append(self.player.cash,result)
+        if self.gameType == "human":
+            print(result.value)
+            print("You have " + self.player.cash + " credits remaining.")
+            print("This is equal to "+ self.player.cash/9999999999 + " dollars. You are rich.")
+        self.response.append(self.player.cash, result)
         self.dealer.hand.clear()
         self.player.hand.clear()
 
     def player_wins(self):
-        global playerWins, player
         self.player.cash += self.betAmount
 
     def dealer_wins(self):
-        global dealerWins, player
         self.player.cash -= int(self.betAmount)
+
+    def get_response(self):
+        return self.response
