@@ -46,10 +46,8 @@ class Game:
     def display_final(self):
         self.response.extend(('-'.join(str(item) for item in self.dealer.show_final()), self.dealer.count()))
         self.response.extend(('-'.join(str(item) for item in self.player.show()), self.player.count()))
-        self.response.extend(())
         return self.dealer.show_final(), self.player.show()
     def display(self):
-
         self.response.extend(('-'.join(str(item) for item in self.dealer.show()), self.dealer.count()))
         self.response.extend(('-'.join(str(item) for item in self.player.show()), self.player.count()))
         return self.dealer.show(), self.player.show()
@@ -58,8 +56,7 @@ class Game:
         self.response.append(playType.get_name())
         if (playType == PlayType.hit):
             self.deck.draw(1, self.player.hand)
-            self.score_hit()
-            return True
+            return self.score_hit()
         self.cover()
         return False
 
@@ -67,6 +64,8 @@ class Game:
         if (self.player.count() > 21):
             self.dealer_wins()
             self.close(Result.playerBusted)
+            return False
+        return True
 
     def score(self):
         playerCount = self.player.count()

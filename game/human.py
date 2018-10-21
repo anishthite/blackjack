@@ -21,7 +21,7 @@ class Human(Bot):
         betAmount = input("Bet Amount: ")
         return betAmount
 
-    @classmethod 
+    @classmethod
     def human_input_action(cls):
         action = input("Hit or Stand: ")
         if action.lower() == "hit" or action.lower() == "h":
