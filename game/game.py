@@ -6,7 +6,7 @@ class Result(enum.Enum):
     dealerBusted = "The Dealer got Busted"
     dealerMore = "The Dealer has more than you"
     playerMore = "You have more than the Dealer"
-    draw = "Congratulations, you drew. Should've bough a lottery ticket with that luck"
+    draw = "Congratulations, you drew. Should've bought a lottery ticket with that luck"
 
     def get_name(self):
         return self.name
